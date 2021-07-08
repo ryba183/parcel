@@ -30,18 +30,18 @@ def main(dt_list = [1e-3, 1.5e-3, 2e-3, 3e-3, 4e-3, 8e-3, 1e-2, 2e-2, 4e-2, 8e-2
 
     # initial values
     z_max  = 200.
-    w       = 1.                                        
+    w       = 1.
     RH_init = .99999
     T_init  = 280.
     p_init  = 100000.
     r_init  = common.eps * RH_init * common.p_vs(T_init) / (p_init - RH_init * common.p_vs(T_init))
 
-    # lists to store RH_max and N at the end of the simulation from each test run 
+    # lists to store RH_max and N at the end of the simulation from each test run
     RH_list = []
     N_list  = []
 
     for dt in dt_list:
-        print "\nt time step", dt
+        print("\nt time step", dt)
         outfile_nc = "timesteptest_dt=" + str(dt) + ".nc"
         parcel(dt=dt, outfreq = int(z_max/w/dt),   outfile = outfile_nc,\
                 w = w, T_0 = T_init, p_0 = p_init, r_0 = r_init, z_max = z_max, \
@@ -51,11 +51,11 @@ def main(dt_list = [1e-3, 1.5e-3, 2e-3, 3e-3, 4e-3, 8e-3, 1e-2, 2e-2, 4e-2, 8e-2
 
         f_out  = netcdf.netcdf_file(outfile_nc, "r")
         RH_max = f_out.RH_max
-        N_end  = sum(f_out.variables["conc"][-1, -9:]) # concentration of drops > 1e-6 m                                                                                  
-        RH_list.append((RH_max - 1)*100)  # [%]                                      
-        N_list.append(N_end / 1e6)        # [1/mg] 
+        N_end  = sum(f_out.variables["conc"][-1, -9:]) # concentration of drops > 1e-6 m
+        RH_list.append((RH_max - 1)*100)  # [%]
+        N_list.append(N_end / 1e6)        # [1/mg]
 
-        subprocess.call(["rm", outfile_nc])          
+        subprocess.call(["rm", outfile_nc])
 
     data = {"RH" : RH_list, "N" : N_list, "dt" : dt_list}
     timestep_plot(data)

@@ -5,7 +5,7 @@ import sys
 #sys.path.insert(0, "../libcloudphxx/build/bindings/python/")
 #sys.path.insert(0, "../../../libcloudphxx/build/bindings/python/")
 #sys.path.insert(0, "/usr/local/lib/site-python/")
-#sys.path.insert(0, "path_to/lib/python3/dist-packages")
+sys.path.insert(0, "/home/piotr/Piotr/biblioteki/local_folder/lib/python3/dist-packages")
 # TEMP TODO TEMP TODO !!!
 
 from argparse import ArgumentParser, RawTextHelpFormatter
@@ -300,39 +300,29 @@ def parcel(dt=.1, z_max=200., w=1., T_0=300., p_0=101300.,
     wait (Optional[float]):       number of timesteps to run parcel model with vertical velocity=0 at the end of simulation
                                   (added for testing)
     sd_conc (Optional[int]):      number of moving bins (super-droplets)
-
     aerosol (Optional[json str]): dict of dicts defining aerosol distribution, e.g.:
-
                                   {"ammonium_sulfate": {"kappa": 0.61, "mean_r": [0.02e-6, 0.07e-7], "gstdev": [1.4, 1.2], "n_tot": [120.0e6, 80.0e6]}
                                    "gccn"            : {"kappa": 1.28, "mean_r": [2e-6],             "gstdev": [1.6],      "n_tot": [1e2]}}
-
                                   where kappa  - hygroscopicity parameter (see doi:10.5194/acp-7-1961-2007)
                                         mean_r - lognormal distribution mean radius [m]                    (list if multimodal distribution)
                                         gstdev - lognormal distribution geometric standard deviation       (list if multimodal distribution)
                                         n_tot  - lognormal distribution total concentration under standard
                                                  conditions (T=20C, p=1013.25 hPa, rv=0) [m^-3]            (list if multimodal distribution)
-
     large_tail (Optional[bool]) : use more SD to better represent the large tail of the initial aerosol distribution
-
     out_bin (Optional[json str]): dict of dicts defining spectrum diagnostics, e.g.:
-
                                   {"radii": {"rght": 0.0001,  "moms": [0],          "drwt": "wet", "nbin": 26, "lnli": "log", "left": 1e-09},
                                    "cloud": {"rght": 2.5e-05, "moms": [0, 1, 2, 3], "drwt": "wet", "nbin": 49, "lnli": "lin", "left": 5e-07}}
                                   will generate five output spectra:
                                   - 0-th spectrum moment for 26 bins spaced logarithmically between 0 and 1e-4 m for dry radius
                                   - 0,1,2 & 3-rd moments for 49 bins spaced linearly between .5e-6 and 25e-6 for wet radius
-
                                   It can also define spectrum diagnostics for chemical compounds, e.g.:
-
                                   {"chem" : {"rght": 1e-6, "left": 1e-10, "drwt": "dry", "lnli": "log", "nbin": 100, "moms": ["S_VI", "NH4_a"]}}
                                   will output the total mass of H2SO4  and NH4 ions in each sizedistribution bin
-
                                   Valid "moms" for chemistry are:
                                     "O3_a",  "H2O2_a", "H",
                                     "SO2_a",  "S_VI",
                                     "CO2_a",
                                     "NH3_a", "HNO3_a",
-
     SO2_g    (Optional[float]):   initial SO2  gas mixing ratio [kg / kg dry air]
     O3_g     (Optional[float]):   initial O3   gas mixing ratio [kg / kg dry air]
     H2O2_g   (Optional[float]):   initial H2O2 gas mixing ratio [kg / kg dry air]
@@ -342,10 +332,7 @@ def parcel(dt=.1, z_max=200., w=1., T_0=300., p_0=101300.,
     chem_dsl (Optional[bool]):    on/off for dissolving chem species into droplets
     chem_dsc (Optional[bool]):    on/off for dissociation of chem species in droplets
     chem_rct (Optional[bool]):    on/off for oxidation of S_IV to S_VI
-
 }
-
-
    """
   # packing function arguments into "opts" dictionary
   args, _, _, _ = inspect.getargvalues(inspect.currentframe())
